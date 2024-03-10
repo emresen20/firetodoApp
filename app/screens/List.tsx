@@ -1,12 +1,19 @@
-import { addDoc, collection, onSnapshot } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, onSnapshot, updateDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { View, Text, Button, StyleSheet, TextInput, FlatList } from "react-native";
+import { View, Text, Button, StyleSheet, TextInput, FlatList, TouchableOpacity } from "react-native";
 import { FIRESTORE_DB } from "../../firebaseConfig";
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { Entypo } from '@expo/vector-icons';
 
-
+export interface Todo {
+    title:string;
+    done:boolean;
+    id:string;
+     
+}
 
 const List = () => {
-    const [todos, setTodos] = useState<any[]>([]);
+    const [todos, setTodos] = useState<Todo[]>([]);
     const [todo, setTodo] = useState("");
 
     useEffect(() => {
@@ -15,13 +22,13 @@ const List = () => {
             next: (snapshot) => {
                 console.log("UPDATED");
 
-                const todos: any[] = [];
+                const todos: Todo[] = [];
                 snapshot.docs.forEach((doc) => {
                     todos.push({
                         id: doc.id,
                         ...doc.data(),
 
-                    });
+                    } as Todo);
                 });
                 setTodos(todos);
             }
@@ -34,6 +41,31 @@ const List = () => {
         const doc = await addDoc(collection(FIRESTORE_DB, 'todos'), { title: todo, done: false })
         setTodo("")
     }
+
+    const renderTodo=({item}:any) =>{
+        const ref = doc(FIRESTORE_DB,`todos/${item.id}`)
+
+        const toggleDone=async()=>{
+            updateDoc(ref,{done:!item.done})
+
+        }
+
+        const deleteItem=async()=>{
+            deleteDoc(ref)
+            
+        }
+        return(
+            <View>
+                <TouchableOpacity onPress={toggleDone}>
+                    {item.done && <Ionicons name="checkmark-circle" size={24} color="green" /> }
+                    {!item.done && <Entypo name="circle" size={24} color="black" /> }
+                    
+                    <Text>{item.title}</Text>
+                </TouchableOpacity>
+                <Ionicons name="trash-bin-outline" onPress={deleteItem} />
+            </View>
+        )
+    }
     return (
         <View style={styles.container}>
             <View>
@@ -41,16 +73,16 @@ const List = () => {
                     value={todo} />
                 <Button onPress={adTodo} title="Add" disabled={todo === ""} />
 
-                {/* {todos.length > 0 && (
+                 {todos.length > 0 && (
                     <View>
                         <FlatList
                             data={todos}
-                            renderItem={}
-                            keyExtractor={(todo) => todo.id}
+                            renderItem={(item)=> renderTodo(item)}
+                            keyExtractor={(todo: Todo) => todo.id}
                         />
                     </View>
 
-                )} */}
+                )} 
 
             </View>
         </View>
