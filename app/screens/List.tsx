@@ -4,6 +4,7 @@ import { View, Text, Button, StyleSheet, TextInput, FlatList, TouchableOpacity }
 import { FIRESTORE_DB } from "../../firebaseConfig";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Entypo } from '@expo/vector-icons';
+import { NavigationProp } from "@react-navigation/native";
 
 export interface Todo {
     title:string;
@@ -12,7 +13,10 @@ export interface Todo {
      
 }
 
-const List = () => {
+interface RouterPros{
+    navigation:NavigationProp<any,any>
+}
+const List = ({navigation}:RouterPros) => {
     const [todos, setTodos] = useState<Todo[]>([]);
     const [todo, setTodo] = useState("");
 
@@ -55,8 +59,8 @@ const List = () => {
             
         }
         return(
-            <View>
-                <TouchableOpacity onPress={toggleDone}>
+            <View style={styles.flatlistview}>
+                <TouchableOpacity style={styles.flatlistview}onPress={toggleDone}>
                     {item.done && <Ionicons name="checkmark-circle" size={24} color="green" /> }
                     {!item.done && <Entypo name="circle" size={24} color="black" /> }
                     
@@ -72,9 +76,9 @@ const List = () => {
                 <TextInput placeholder="Add New Todo " onChangeText={(text) => setTodo(text)}
                     value={todo} />
                 <Button onPress={adTodo} title="Add" disabled={todo === ""} />
-
+                <Button onPress={()=>navigation.navigate("Details")} title="Go to Log out"  />
                  {todos.length > 0 && (
-                    <View>
+                    <View style={styles.todocotainer}>
                         <FlatList
                             data={todos}
                             renderItem={(item)=> renderTodo(item)}
@@ -93,7 +97,21 @@ export default List;
 
 const styles = StyleSheet.create({
     container: {
+        flex:1,
+        marginVertical:5
+        
+    },
+
+    flatlistview:{
+        flexDirection:"row",
+        backgroundColor:"red",
+        flex:1,
+        marginVertical:10
+    },
+    todocotainer:{
+        flexDirection:"row",
+        alignItems:"center",
+        marginVertical:4,
 
     }
-
 })

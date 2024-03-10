@@ -1,10 +1,18 @@
+import { NavigationProp } from "@react-navigation/native";
 import React from "react";
-import { View ,Text} from "react-native";
+import { View ,Text, Button} from "react-native";
+import { FIREBASE_AUTH } from "../../firebaseConfig";
 
-const Details= ()=>{
+interface RouterPros{
+    navigation:NavigationProp<any,any>
+}
+
+const Details= ({navigation}:RouterPros)=>{
+ 
     return(
         <View>
-            <Text>Details</Text>
+            <Button title="go to list" onPress={()=> navigation.navigate("List")}/>
+            <Button title="Log out" onPress={()=> FIREBASE_AUTH.signOut()}/>
         </View>
     )
 }
