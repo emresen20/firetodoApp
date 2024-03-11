@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, StyleSheet, Button, ActivityIndicator, KeyboardAvoidingView,Image } from "react-native";
+import { View, Text, TextInput, StyleSheet, Button, ActivityIndicator, KeyboardAvoidingView,Image, TouchableOpacity } from "react-native";
 import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from "firebase/auth"
 import { FIREBASE_AUTH } from "../../firebaseConfig";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -48,20 +48,31 @@ const Login = () => {
                 <TextInput 
                     style={styles.firsttextinput}
                     placeholder="Email " onChangeText={(text) => setEmail(text)}
-                    value={email} />
+                    value={email}
+                    placeholderTextColor={"white"}                     />
+
                 <TextInput 
                     style={styles.secondtextinput}
                     placeholder="Password " autoCapitalize="none"
                     onChangeText={(text) => setPassword(text)}
                     value={password}
-                    secureTextEntry={true} />
+                    secureTextEntry={true}
+                    placeholderTextColor={"white"} />
 
                 {loading ? (
                     <ActivityIndicator />
                 ) : (
-                    <>
-                        <Button onPress={signUp} title="Create Account" />
-                        <Button onPress={signIn} title="Sign in" />
+                    <>  
+                        <View style={styles.touachableopacityview}>
+                            <TouchableOpacity style={styles.touachableopacityfirst} onPress={signIn}>
+                                <Text style={styles.lasttext}>Login</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity style={styles.touachableopacitysecond} onPress={signUp}>
+                                <Text style={styles.lasttext}>SignUp</Text>
+                            </TouchableOpacity>
+                        </View>
+                        
                     </>
                 )}
 
@@ -99,6 +110,7 @@ const styles = StyleSheet.create({
     image:{
         width:150,
         height:150,
+        marginTop:25
     },
     text:{
         color:"white",
@@ -108,19 +120,21 @@ const styles = StyleSheet.create({
     firsttextinput:{
         borderWidth:2,
         borderColor:"white",
-        height:50,
-        width:300,
+        height:53,
+        width:325,
         borderRadius:20,
         padding:10,
         marginBottom:20,
-        color:"white"
+        color:"white",
+        marginTop:-10
+       
 
     },
     secondtextinput:{
         borderWidth:2,
         borderColor:"white",
-        height:50,
-        width:300,
+        height:53,
+        width:325,
         padding:10,
         borderRadius:20,
         color:"white"
@@ -136,6 +150,32 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginVertical: 4,
 
-    }
+    },
+    touachableopacityfirst:{
+        height:40,
+        width:150,
+        backgroundColor:"#2BC990",
+        marginTop:20,
+        borderRadius:10,
+        marginRight:10,
+        justifyContent:"center",
+        alignItems:"center",
+    },
+    touachableopacityview:{
+        flexDirection:"row",
+        justifyContent:"space-between"
+    },
+    touachableopacitysecond:{
+        height:40,
+        width:150,
+        backgroundColor:"#2BC990",
+        marginTop:20,
+        borderRadius:10,
+        justifyContent:"center",
+        alignItems:"center",
+    },
+    lasttext:{
+        color:"white",
+    },   
 })
 
