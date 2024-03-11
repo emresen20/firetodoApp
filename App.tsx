@@ -15,7 +15,7 @@ const InsideStack = createNativeStackNavigator();
 function InsideLayout(){
   return(
     <InsideStack.Navigator>
-      <InsideStack.Screen name='List' component={List}/>
+      <InsideStack.Screen name='List' component={List} />
       <InsideStack.Screen name="Details" component={Details} />
     </InsideStack.Navigator>
   )
@@ -37,7 +37,7 @@ export default function App() {
           <Stack.Screen name="InsideLayout" component={InsideLayout} options={{headerShown:false}} />
 
         ) :(
-          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Login" component={Login} options={{headerShown:false}} />
         )}
         {/* <Stack.Screen name="List" component={List} />
         <Stack.Screen name="Login" component={Login} /> */}
