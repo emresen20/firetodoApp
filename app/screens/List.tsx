@@ -5,6 +5,7 @@ import { FIRESTORE_DB } from "../../firebaseConfig";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Entypo } from '@expo/vector-icons';
 import { NavigationProp } from "@react-navigation/native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export interface Todo {
     title:string;
@@ -71,12 +72,12 @@ const List = ({navigation}:RouterPros) => {
         )
     }
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <View>
                 <TextInput placeholder="Add New Todo " onChangeText={(text) => setTodo(text)}
                     value={todo} />
                 <Button onPress={adTodo} title="Add" disabled={todo === ""} />
-                <Button onPress={()=>navigation.navigate("Details")} title="Go to Log out"  />
+                
                  {todos.length > 0 && (
                     <View style={styles.todocotainer}>
                         <FlatList
@@ -89,7 +90,8 @@ const List = ({navigation}:RouterPros) => {
                 )} 
 
             </View>
-        </View>
+         <Button onPress={()=>navigation.navigate("Details")} title="Go to Log out"  />
+        </SafeAreaView>
     )
 }
 
@@ -98,7 +100,7 @@ export default List;
 const styles = StyleSheet.create({
     container: {
         flex:1,
-        marginVertical:5
+        backgroundColor: "#0A0171"
         
     },
 
@@ -106,12 +108,12 @@ const styles = StyleSheet.create({
         flexDirection:"row",
         backgroundColor:"red",
         flex:1,
-        marginVertical:10
+        marginVertical:5
     },
     todocotainer:{
         flexDirection:"row",
         alignItems:"center",
-        marginVertical:4,
+        marginVertical:1
 
     }
 })
