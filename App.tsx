@@ -2,25 +2,45 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import List from './app/screens/List';
 import Details from './app/screens/Details';
 import Login from './app/screens/Login';
 import { useEffect, useState } from 'react';
 import { User, onAuthStateChanged } from 'firebase/auth';
 import { FIREBASE_AUTH } from './firebaseConfig';
+import { Ionicons } from '@expo/vector-icons';
+
+
 
 const Stack = createNativeStackNavigator();
 const InsideStack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
-function InsideLayout(){
-  return(
-    <InsideStack.Navigator screenOptions={{
-      headerShown: false 
-    }}>
-      <InsideStack.Screen name='List' component={List} />
-      <InsideStack.Screen name="Details" component={Details} options={{headerShown:false}}/>
-    </InsideStack.Navigator>
-  )
+function InsideLayout() {
+  return (
+    <Tab.Navigator screenOptions={{headerShown:false, tabBarActiveTintColor: 'black',tabBarInactiveTintColor: 'black' }  }>
+        <Tab.Screen
+        name="List"
+        component={List}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="list" color={"green"} size={size} style={{color:"green",}} />
+          ),
+        }}
+      />
+       <Tab.Screen
+        name="Details"
+        component={Details}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="settings-outline" color={"green"} size={size} />
+          ),
+        }}
+      />
+      
+    </Tab.Navigator>
+  );
 }
 
 export default function App() {

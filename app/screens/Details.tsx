@@ -1,6 +1,6 @@
 import { NavigationProp } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { View ,Text, Button} from "react-native";
+import { View, Text, Button, StyleSheet, TouchableOpacity,Image } from "react-native";
 import { FIREBASE_AUTH } from "../../firebaseConfig";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { User, onAuthStateChanged } from 'firebase/auth';
@@ -20,13 +20,58 @@ const Details = ({ navigation }: RouterProps) => {
     }, []);
 
     return (
-        <SafeAreaView>
-            <Text>Email: {user ? user.email : "No user logged in"}</Text>
+        <SafeAreaView style={styles.container}>
+            <View style={styles.firsview}>
+                <Text style={styles.firsttext}>
+                    {user?.email}
+                </Text>
+            </View>
+
+            <View style={styles.secondview}>
+                <TouchableOpacity  onPress={() => FIREBASE_AUTH.signOut()}>
+                    <Image style={styles.logoutimage} source={require("../../assets/turn-off.png")}/>
+                </TouchableOpacity>
+            </View>
+            {/* <Text>Email: {user ? user.email : "No user logged in"}</Text>
             <Text>{user?.email}</Text>
             <Button title="Go to List" onPress={() => navigation.navigate("List")} />
-            <Button title="Log out" onPress={() => FIREBASE_AUTH.signOut()} />
+            <Button title="Log out" onPress={() => FIREBASE_AUTH.signOut()} /> */}
         </SafeAreaView>
     );
 }
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: "#0A0171"
+
+    },
+
+    firsview: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center"
+
+    },
+    secondview: {
+        flex: 6,
+        justifyContent:"center",
+        alignItems:"center"
+
+    },
+    firsttext: {
+        fontSize: 25,
+        color:"white"
+    },
+    logoutimage:{
+        height:150,
+        width:150
+    },
+    backimage:{
+        
+        height:30,
+        width:30
+    }
+
+})
 
 export default Details;

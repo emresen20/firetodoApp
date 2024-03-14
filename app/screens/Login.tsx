@@ -150,11 +150,8 @@ const styles = StyleSheet.create({
         width: 325,
         borderRadius: 20,
         padding: 10,
-        marginBottom: 20,
-        color: "white",
-        marginTop: -10
-
-
+        marginBottom:8,
+        color: "white"
     },
     secondtextinput: {
         borderWidth: 2,
