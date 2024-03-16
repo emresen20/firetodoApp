@@ -30,7 +30,7 @@ function InsideLayout() {
         }}
       />
        <Tab.Screen
-        name="Details"
+        name="Settings"
         component={Details}
         options={{
           tabBarIcon: ({ color, size }) => (
