@@ -68,6 +68,8 @@ const List = ({ navigation }: RouterPros) => {
         console.log("ADD");
         const doc = await addDoc(collection(FIRESTORE_DB, 'todos'), { title: todo, done: false })
         setTodo("")
+        setModalVisible(false)
+
     }
     const AddModal = () => {
 
@@ -138,7 +140,7 @@ const List = ({ navigation }: RouterPros) => {
                 }}
             >
                 <View style={styles.modalcontainer}>
-                    <View style={{ backgroundColor: "red" }}>
+                    <View >
                         <View style={styles.textinputview}>
                             <TextInput style={styles.firsttextinput}
                                 placeholderTextColor={"white"}
@@ -147,21 +149,26 @@ const List = ({ navigation }: RouterPros) => {
 
                             />
                         </View>
+                        <View style={{flexDirection:"row",gap:50,justifyContent:"center",marginTop:7}}>
                         <TouchableOpacity style={styles.modalimageview} onPress={adTodo} disabled={todo === ""}>
                             <Image style={styles.modaliamge} source={require("../../assets/plus.png")} />
                         </TouchableOpacity>
-                        <Button title="Close Modal" onPress={() => setModalVisible(!modalVisible)} />
+                        <TouchableOpacity style={styles.modalimageview} onPress={() => setModalVisible(!modalVisible)}>
+                            <Image style={styles.modaliamge} source={require("../../assets/close.png")} />
+                        </TouchableOpacity>
+                        </View>
+            
                     </View>
                 </View>
             </Modal>
 
             <View style={{ flex: 1 }}>
-                <View style={styles.textinputview}>
+                {/* <View style={styles.textinputview}>
                     <TextInput style={styles.firsttextinput}
                         placeholderTextColor={"white"}
                         placeholder="Add New Todo " onChangeText={(text) => setTodo(text)}
                         value={todo} />
-                </View>
+                </View> */}
                 {/* <Button onPress={adTodo} title="Add" disabled={todo === ""} /> */}
 
                 {/* <BottomSheet snapPoints={snapPoints} index={0}>
@@ -257,20 +264,23 @@ const styles = StyleSheet.create({
     },
     modalcontainer: {
         width: ("90%"),
-        height: ('40%'), backgroundColor: "red",
+        height: ('40%'), 
+        backgroundColor: "#0A0171",
         justifyContent: "center",
         alignItems: "center",
         alignSelf: "center",
-        marginTop: 400,
+        marginTop: 100,
         borderRadius: 55
     },
     modaliamge: {
-        width: 30,
-        height: 30
+        width: 40,
+        height: 40
     },
     modalimageview: {
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        flexDirection:"row",
+        gap:50
     }
 
 })
