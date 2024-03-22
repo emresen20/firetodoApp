@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import { User, onAuthStateChanged } from 'firebase/auth';
 import { FIREBASE_AUTH } from './firebaseConfig';
 import { Ionicons } from '@expo/vector-icons';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 
 
@@ -53,6 +54,7 @@ export default function App() {
     })
   },[])
   return (
+  <GestureHandlerRootView style={{ flex: 1 }}>
     <NavigationContainer >
       <Stack.Navigator initialRouteName='Login'>
         {user? (
@@ -65,6 +67,7 @@ export default function App() {
         <Stack.Screen name="Login" component={Login} /> */}
       </Stack.Navigator>
     </NavigationContainer>
+  </GestureHandlerRootView>
   );
 }
 

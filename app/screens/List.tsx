@@ -1,11 +1,13 @@
 import { addDoc, collection, deleteDoc, doc, onSnapshot, updateDoc } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
-import { View, Text, Button, StyleSheet, TextInput, FlatList, TouchableOpacity, Image } from "react-native";
+import React, { useEffect, useState, useRef, useMemo } from "react";
+import { View, Text, Button, StyleSheet, TextInput, FlatList, TouchableOpacity, Image, Modal } from "react-native";
 import { FIRESTORE_DB } from "../../firebaseConfig";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Entypo } from '@expo/vector-icons';
 import { NavigationProp } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import ActionSheet from "react-native-actions-sheet";
+import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 
 export interface Todo {
     title: string;
@@ -18,8 +20,29 @@ interface RouterPros {
     navigation: NavigationProp<any, any>
 }
 const List = ({ navigation }: RouterPros) => {
+    const actionSheetRef = useRef(null);
     const [todos, setTodos] = useState<Todo[]>([]);
     const [todo, setTodo] = useState("");
+    const [modalVisible, setModalVisible] = useState(false);
+    const [isVisible, setisVisible] = useState(false);
+
+    const BottomSheetRef = useRef<BottomSheet>(null);
+    const handleClosePress = () => BottomSheetRef.current?.close;
+
+    const openModal=()=>{
+        setModalVisible(true);
+    }
+
+    const handleOpenPress = () => BottomSheetRef.current?.expand;
+    const snapPoints = useMemo(() => ['25%', '50%', '70%'], []);
+
+
+    const showmodal = () => {
+        return (
+            setModalVisible(true)
+        )
+    }
+
 
     useEffect(() => {
         const todoRef = collection(FIRESTORE_DB, 'todos');
@@ -46,6 +69,36 @@ const List = ({ navigation }: RouterPros) => {
         const doc = await addDoc(collection(FIRESTORE_DB, 'todos'), { title: todo, done: false })
         setTodo("")
     }
+    const AddModal = () => {
+
+        return (
+            <Modal
+                animationType="slide" // Modal animasyon tipi
+                transparent={true} // Arka planı şeffaf yapar
+                visible={modalVisible} // Modal'ın görünürlüğünü belirler
+                onRequestClose={() => {
+                    setModalVisible(!modalVisible); // Modal kapatıldığında yapılacak işlemler
+                }}
+            >
+                <View style={styles.modalcontainer}>
+                    <View style={{ backgroundColor: "red" }}>
+                        <View style={styles.textinputview}>
+                            <TextInput style={styles.firsttextinput}
+                                placeholderTextColor={"white"}
+                                placeholder="Add New Todo " onChangeText={(text) => setTodo(text)}
+                                value={todo}
+
+                            />
+                        </View>
+                        <TouchableOpacity style={styles.modalimageview} onPress={adTodo} disabled={todo === ""}>
+                            <Image style={styles.modaliamge} source={require("../../assets/plus.png")} />
+                        </TouchableOpacity>
+                        <Button title="Close Modal" onPress={() => setModalVisible(!modalVisible)} />
+                    </View>
+                </View>
+            </Modal>
+        );
+    }
 
     const renderTodo = ({ item }: any) => {
         const ref = doc(FIRESTORE_DB, `todos/${item.id}`)
@@ -59,6 +112,7 @@ const List = ({ navigation }: RouterPros) => {
             deleteDoc(ref)
 
         }
+
         return (
             <View style={styles.flatlistview}>
                 <TouchableOpacity style={styles.flatlistview} onPress={toggleDone}>
@@ -70,24 +124,59 @@ const List = ({ navigation }: RouterPros) => {
                 <Ionicons name="trash-bin-outline" onPress={deleteItem} />
             </View>
         )
-    }
+    };
+
     return (
         <SafeAreaView style={styles.container}>
-            <View>
+
+            <Modal
+                animationType="slide" // Modal animasyon tipi
+                transparent={true} // Arka planı şeffaf yapar
+                visible={modalVisible} // Modal'ın görünürlüğünü belirler
+                onRequestClose={() => {
+                    setModalVisible(!modalVisible); // Modal kapatıldığında yapılacak işlemler
+                }}
+            >
+                <View style={styles.modalcontainer}>
+                    <View style={{ backgroundColor: "red" }}>
+                        <View style={styles.textinputview}>
+                            <TextInput style={styles.firsttextinput}
+                                placeholderTextColor={"white"}
+                                placeholder="Add New Todo " onChangeText={(text) => setTodo(text)}
+                                value={todo}
+
+                            />
+                        </View>
+                        <TouchableOpacity style={styles.modalimageview} onPress={adTodo} disabled={todo === ""}>
+                            <Image style={styles.modaliamge} source={require("../../assets/plus.png")} />
+                        </TouchableOpacity>
+                        <Button title="Close Modal" onPress={() => setModalVisible(!modalVisible)} />
+                    </View>
+                </View>
+            </Modal>
+
+            <View style={{ flex: 1 }}>
                 <View style={styles.textinputview}>
                     <TextInput style={styles.firsttextinput}
                         placeholderTextColor={"white"}
                         placeholder="Add New Todo " onChangeText={(text) => setTodo(text)}
                         value={todo} />
                 </View>
-
-
-                <TouchableOpacity onPress={adTodo}  disabled={todo === ""} style={styles.imageview}>
-                    <Image style={styles.plusimage} source={require("../../assets/plus.png")} />
-                </TouchableOpacity>
-
                 {/* <Button onPress={adTodo} title="Add" disabled={todo === ""} /> */}
 
+                {/* <BottomSheet snapPoints={snapPoints} index={0}>
+                <View style={{flex:1, backgroundColor: "red",alignItems:"center" }}>
+                    <TextInput style={styles.firsttextinput}
+                        placeholderTextColor={"white"}
+                        placeholder="Add New Todo " onChangeText={(text) => setTodo(text)}
+                        value={todo}
+
+                    />
+                    <TouchableOpacity style={styles.modalimageview} onPress={adTodo} disabled={todo === ""}>
+                        <Image style={styles.modaliamge} source={require("../../assets/plus.png")} />
+                    </TouchableOpacity>
+                </View>
+            </BottomSheet> */}
 
                 {todos.length > 0 && (
                     <View style={styles.todocotainer}>
@@ -99,7 +188,12 @@ const List = ({ navigation }: RouterPros) => {
                     </View>
 
                 )}
+                <TouchableOpacity style={styles.imageview} onPress={openModal}>
+                    <View style={styles.plusimage}>
+                        <Image style={styles.plusimage} source={require("../../assets/plus.png")} />
+                    </View>
 
+                </TouchableOpacity>
             </View>
         </SafeAreaView>
     )
@@ -110,23 +204,25 @@ export default List;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#0A0171"
+        backgroundColor: "#0A0171",
+        justifyContent: 'flex-end'
 
     },
 
     flatlistview: {
         flexDirection: "row",
-        backgroundColor: "red",
+        backgroundColor: "yellow",
         flex: 1,
-        width:"100%",
-        height:40,
-        marginBottom:5,
-        
+        width: "100%",
+        height: 40,
+        marginBottom: 5,
+
     },
     todocotainer: {
         flexDirection: "row",
         alignItems: "center",
-        marginVertical: 5
+        marginVertical: 5,
+
 
     },
     firsttextinput: {
@@ -141,17 +237,40 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     },
     plusimage: {
-        width: 40,
-        height: 40
+        width: 50,
+        height: 50,
+        backgroundColor: 'transparent'
     },
     imageview: {
+        position: 'absolute',
+        bottom: 10,
+        right: 175,
+        backgroundColor: 'transparent'
+
+
+    },
+    textinputview: {
         justifyContent: "center",
         alignItems: "center",
-        marginTop: 5
+        marginTop: 5,
+        borderRadius: 20,
     },
-    textinputview:{
-        justifyContent:"center",
-        alignItems:"center",
-        marginTop:5
+    modalcontainer: {
+        width: ("90%"),
+        height: ('40%'), backgroundColor: "red",
+        justifyContent: "center",
+        alignItems: "center",
+        alignSelf: "center",
+        marginTop: 400,
+        borderRadius: 55
+    },
+    modaliamge: {
+        width: 30,
+        height: 30
+    },
+    modalimageview: {
+        justifyContent: "center",
+        alignItems: "center"
     }
+
 })
