@@ -118,12 +118,12 @@ const List = ({ navigation }: RouterPros) => {
         return (
             <View style={styles.flatlistview}>
                 <TouchableOpacity style={styles.flatlistview} onPress={toggleDone}>
-                    {item.done && <Ionicons name="checkmark-circle" size={24} color="green" />}
-                    {!item.done && <Entypo name="circle" size={24} color="black" />}
+                    {item.done && <Ionicons name="checkmark-circle" size={30} color="#1e96fc" style={{paddingRight:10,alignSelf:"center",marginLeft:3}} />}
+                    {!item.done && <Entypo name="circle" size={30} color="#1e96fc" style={{paddingRight:10,alignSelf:"center",marginLeft:3}} />}
 
-                    <Text>{item.title}</Text>
+                    <Text style={{alignSelf:"center",fontSize:15}}>{item.title}</Text>
                 </TouchableOpacity>
-                <Ionicons name="trash-bin-outline" onPress={deleteItem} />
+                <Ionicons size={30} name="trash-bin-outline" onPress={deleteItem} style={{marginRight:10,alignSelf:"center"}} color="#1e96fc"/>
             </View>
         )
     };
@@ -197,7 +197,7 @@ const List = ({ navigation }: RouterPros) => {
                 )}
                 <TouchableOpacity style={styles.imageview} onPress={openModal}>
                     <View style={styles.plusimage}>
-                        <Image style={styles.plusimage} source={require("../../assets/plus.png")} />
+                        <Image style={styles.plusimage} source={require("../../assets/plusblue.png")} />
                     </View>
 
                 </TouchableOpacity>
@@ -211,18 +211,22 @@ export default List;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#0A0171",
-        justifyContent: 'flex-end'
+        backgroundColor: "#edf6f9",
+        justifyContent: 'flex-end',
+        
 
     },
 
     flatlistview: {
         flexDirection: "row",
-        backgroundColor: "yellow",
+        alignSelf:"center",
+        backgroundColor: "#fefcfb",
         flex: 1,
-        width: "100%",
-        height: 40,
+        width: "85%",
+        height: 90,
         marginBottom: 5,
+        borderRadius:20,
+        marginTop:5
 
     },
     todocotainer: {
@@ -265,7 +269,7 @@ const styles = StyleSheet.create({
     modalcontainer: {
         width: ("90%"),
         height: ('40%'), 
-        backgroundColor: "#0A0171",
+        backgroundColor: "#1e96fc",
         justifyContent: "center",
         alignItems: "center",
         alignSelf: "center",

@@ -26,7 +26,7 @@ function InsideLayout() {
         component={List}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="list" color={"green"} size={size} style={{color:"green",}} />
+            <Ionicons name="list" color={"#edf6f9"} size={size} style={{color:"blue",}} />
           ),
         }}
       />
@@ -35,7 +35,7 @@ function InsideLayout() {
         component={Details}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="settings-outline" color={"green"} size={size} />
+            <Ionicons name="settings-outline" color={"blue"} size={size} />
           ),
         }}
       />

@@ -42,7 +42,7 @@ const Details = ({ navigation }: RouterProps) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#0A0171"
+        backgroundColor: "#edf6f9"
 
     },
 
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     },
     firsttext: {
         fontSize: 25,
-        color:"white"
+        color:"black"
     },
     logoutimage:{
         height:150,
